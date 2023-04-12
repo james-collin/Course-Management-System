@@ -1,4 +1,4 @@
-# Student Management System (SMS)
+# Student Information System
 
 This project is built using Node.js with Express.js as the backend and React.js as the frontend. The database used is PostgreSQL.
 
