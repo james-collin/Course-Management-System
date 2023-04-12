@@ -1,7 +1,16 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import Navbar from "../components/Navbar";
-import Button from "../components/Button";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import Button from '../components/Button';
+import axios from 'axios';
+import { useToast } from '@chakra-ui/react';
+import {
+  FlexCol,
+  FlexRow,
+  Form,
+  Input,
+  Label,
+  TextArea,
+} from '../components/Utils';
 
 const Container = styled.div`
   display: flex;
@@ -14,77 +23,129 @@ const Title = styled.h1`
   margin-bottom: 2rem;
 `;
 
-const Form = styled.form`
+const ButtonContainer = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
+  gap: 24px;
+  margin-top: 24px;
 `;
 
-const Label = styled.label`
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-  margin-top: 3rem;
-`;
-
-const Input = styled.input`
-  padding: 0.5rem;
-  font-size: 1.2rem;
-  border: none;
-  border-bottom: 2px solid black;
-  margin-bottom: 1rem;
-  width: 400px;
-`;
-
-const TextArea = styled.textarea`
-  padding: 0.5rem;
-  font-size: 1.2rem;
-  border: none;
-  border-bottom: 2px solid black;
-  margin-bottom: 1rem;
-  width: 400px;
-  resize: none;
-`;
-
-const CreateCourse = () => {
-  const [courseTitle, setCourseTitle] = useState("");
-  const [courseDetails, setCourseDetails] = useState("");
-
-  const handleCourseTitleChange = (event) => {
-    setCourseTitle(event.target.value);
-  };
-
-  const handleCourseDetailsChange = (event) => {
-    setCourseDetails(event.target.value);
-  };
+const CreateCourse = (props) => {
+  const [courseTitle, setCourseTitle] = useState('');
+  const [courseDetails, setCourseDetails] = useState('');
+  const [courseId, setCourseId] = useState('');
+  const [courseCredit, setCourseCredit] = useState('');
+  const [coursePreRequisit, setCoursePreRequisit] = useState();
+  const toast = useToast();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Course title:", courseTitle);
-    console.log("Course details:", courseDetails);
+    const data = {
+      course_id: courseId,
+      title: courseTitle,
+      description: courseDetails,
+      credit: courseCredit,
+      prerequisites:
+        coursePreRequisit?.split(',').map((item) => item.trim()) || [],
+    };
+    const uri = '/api/v1/course';
+
+    axios
+      .post(uri, data)
+      .then((res) => {
+        toast({
+          title: 'Course Created',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+        props.onComplete();
+      })
+      .catch((err) => {
+        console.log(err);
+        toast({
+          title: err.response.data.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      });
+
+    props.hideModal();
   };
 
   return (
     <Container>
-      <Navbar />
       <Title>Create Course</Title>
       <Form onSubmit={handleSubmit}>
-        <Label htmlFor="title">Course Title:</Label>
-        <Input
-          id="title"
-          type="text"
-          value={courseTitle}
-          onChange={handleCourseTitleChange}
-        />
+        <FlexRow>
+          <FlexCol>
+            <Label>Title:</Label>
+            <Input
+              id="title"
+              type="text"
+              value={courseTitle}
+              placeholder="Artificial Intelligence"
+              onChange={(e) => setCourseTitle(e.target.value)}
+              required
+            />
+          </FlexCol>
+          <FlexCol>
+            <Label>Course Id:</Label>
+            <Input
+              id="id"
+              type="text"
+              placeholder="SWE123"
+              value={courseId}
+              onChange={(e) => setCourseId(e.target.value)}
+              required
+            />
+          </FlexCol>
+        </FlexRow>
+        <FlexRow>
+          <FlexCol>
+            <Label>Credit:</Label>
+            <Input
+              id="credit"
+              placeholder="4.00"
+              type="number"
+              value={courseCredit}
+              required
+              onChange={(e) => setCourseCredit(e.target.value)}
+            />
+          </FlexCol>
+          <FlexCol>
+            <Label>Pre-requisit:</Label>
+            <Input
+              id="pre-requisit"
+              type="text"
+              placeholder="SWE123, CSE350"
+              value={coursePreRequisit}
+              onChange={(e) => setCoursePreRequisit(e.target.value)}
+            />
+          </FlexCol>
+        </FlexRow>
         <Label htmlFor="details">Course Details:</Label>
         <TextArea
           id="details"
-          rows="5"
+          placeholder="Details"
+          required
+          rows="3"
           value={courseDetails}
-          onChange={handleCourseDetailsChange}
+          onChange={(e) => setCourseDetails(e.target.value)}
         />
-        <Button version="success" type="submit">
-          Create
-        </Button>
+        <ButtonContainer>
+          <Button
+            id="cancel"
+            version="danger"
+            onClick={() => props.hideModal()}
+          >
+            Cancel
+          </Button>
+          <Button id="create" version="success" type="submit">
+            Create
+          </Button>
+        </ButtonContainer>
       </Form>
     </Container>
   );

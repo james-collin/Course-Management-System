@@ -1,11 +1,9 @@
-import React from "react";
-import Navbar from "../components/Navbar";
-import Courses from "../components/Courses";
+import React from 'react';
+import Courses from '../courses/Courses';
 
 function Home() {
   return (
     <div>
-      <Navbar />
       <Courses />
     </div>
   );
