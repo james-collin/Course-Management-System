@@ -45,7 +45,7 @@ const handleJWTError = (err) => new AppError("Invalid token", 401);
 const handleTokenExpiredError = (err) => new AppError("Token expired", 401);
 
 const errorHandler = (err, req, res, next) => {
-  // console.log(err);
+  console.log(err);
   err.status = err.status || "error";
   err.statusCode = err.statusCode || 500;
   if (process.env.NODE_ENV === "production") {

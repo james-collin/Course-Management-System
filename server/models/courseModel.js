@@ -28,7 +28,10 @@ const Course = sequelize.define("courses", {
   },
   credit: {
     type: DataTypes.FLOAT,
-    default: 3.0,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
   },
   prerequisites: {
     type: DataTypes.ARRAY(DataTypes.STRING),

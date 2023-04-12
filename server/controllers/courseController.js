@@ -47,12 +47,13 @@ exports.getCourses = catchAsync(async (req, res, next) => {
   });
 });
 exports.getSingleCourse = catchAsync(async (req, res, next) => {
+  console.log("HERE")
   const course = await Course.findOne({
     where: { course_id: req.params.course_id },
     inclue: [Class],
   });
   if (course == null) return next(new AppError(`Course Does Not found`, 404));
-  res.status(200).json(blog);
+  res.status(200).json(course);
 });
 
 exports.createCourse = catchAsync(async (req, res, next) => {

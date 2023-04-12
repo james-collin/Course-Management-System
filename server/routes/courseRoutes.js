@@ -10,14 +10,14 @@ router.get("/", courseController.getCourses);
 router.post(
   "/",
   authController.protect,
-  authController.restrictTo("admin"),
+  //authController.restrictTo("admin"),
   courseController.validatePrerequisites,
   courseController.createCourse
 );
 router.patch(
   "/:course_id",
   authController.protect,
-  authController.restrictTo("admin"),
+  // authController.restrictTo("admin"),
   courseController.validatePrerequisites,
   courseController.updateCourse
 );

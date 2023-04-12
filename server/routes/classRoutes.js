@@ -15,7 +15,7 @@ router.post(
 router.post(
   "/",
   authController.protect,
-  authController.restrictTo("admin"),
+  // authController.restrictTo("admin"),
   classController.createClass
 );
 
@@ -29,7 +29,7 @@ router.patch(
 router.post(
   "/:class_id/:username",
   authController.protect,
-  authController.restrictTo("professor"),
+  //authController.restrictTo("teacher"),
   classController.approveClassEnrolment
 );
 

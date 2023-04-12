@@ -2,13 +2,13 @@
 
 ## users :
 
-    username (String) (unique- primary key)
-    first name ( String)
-    last name (String)
+    username (String) (primary key)
+    first_name ( String)
+    last_name (String)
     email (String)
     password (String)
     gpa (Float)
-    role : (String) ( default student / admin / professor )
+    role : (String) ( default student / admin / teacher )
     description (Text)
     isTranscriptPending ( Boolean ) default false
     transcript_grades : ( Array(Array [String])) [[CSE102,4.0,3.5,], [CSE105,4.0,3.0]]
@@ -27,17 +27,17 @@
     class_id (Number) ( auto increment - unique- primary key )
     course_id (String) [foreign_key] ( CSE102)
     description ( Text)
-    username ( String) [foreign_key] >> username of a professor
-    schedule [ Range of time ]
+    teacher ( String) [foreign_key] >> User.username
+    schedules [ Range of time ]
     pending_students ( Array (String) ) [ sjessy23, mir_john …]
     approved_students ( Array (String) ) [ jessy23, mir_john …]
     isOnGoing ( Boolean )
 
 ## grades :
 
-    grade_id (Number) (auto increment)
-    username (String) [foreign_key]
-    course_id ( String ) [foreign_key]
-    class_id ( Number ) [foreign_key]
+    username (String) [primary_key,foreign_key]
+    class_id ( Number ) [primary_key,foreign_key]
     grade (Float)
     credit (Float) [foreign_key]
+
+# API Calls

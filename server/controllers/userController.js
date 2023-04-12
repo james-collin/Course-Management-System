@@ -6,6 +6,7 @@ const Class = require("../models/classModel");
 const bcrypt = require("bcryptjs");
 const Sequelize = require("sequelize");
 const jwtGenerator = require("../utils/jwtGenerator");
+const Course = require("../models/courseModel");
 
 const createSendToken = (req, res, user, message) => {
   const jwtToken = jwtGenerator(
@@ -162,6 +163,25 @@ exports.approveTranscript = catchAsync(async (req, res, next) => {
     }
   );
   res.status(200).json({
+    status: "success",
+  });
+});
+
+exports.getClassSchedule = catchAsync(async (req, res, next) => {
+  const username = req.params.username;
+  const user = await User.findAll({
+    where: { username },
+    returning: true,
+    attributes: [],
+    include: [
+      {
+        model: Class,
+        attributes: ["schedules"], 
+      },
+    ],
+  });
+  res.status(200).json({
+    user,
     status: "success",
   });
 });

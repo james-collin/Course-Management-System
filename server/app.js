@@ -31,7 +31,7 @@ app.use(express.json({ limit: "1000kb" }));
 app.use(morgan("dev"));
 app.use(xssClean());
 
-app.use(express.static(__dirname + "/public/media/"));
+//app.use(express.static(__dirname + "/public/media/"));
 app.use("/api/v1/grade", gradeRoutes);
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/class", classRoutes);
@@ -43,6 +43,7 @@ app.get("/api/v1", (req, res) => {
 });
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("build"));
+  console.log(__dirname);
   app.all("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "build", "index.html"));
   });

@@ -11,7 +11,7 @@ const Class = sequelize.define("classes", {
     type: DataTypes.STRING,
     foreignKey: true,
   },
-  professor: {
+  teacher: {
     type: DataTypes.STRING,
     foreignKey: true,
     allowNull: false,
@@ -36,8 +36,8 @@ const Class = sequelize.define("classes", {
     defaultValue: [],
   },
   schedules: {
-    type: DataTypes.ARRAY(DataTypes.RANGE(DataTypes.DATE)),
-    defaultValue: new Array(7).fill([]),
+    type: DataTypes.ARRAY(DataTypes.STRING),
+    defaultValue: [],
   },
 });
 

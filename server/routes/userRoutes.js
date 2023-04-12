@@ -5,6 +5,7 @@ const authController = require("../controllers/authController");
 
 router.post("/signup", userController.signUp);
 router.post("/signin", userController.signIn);
+router.get("/:username/class-schedule", authController.protect, userController.getClassSchedule);
 router.get("/:username", authController.protect, userController.getSingleUser);
 
 router.patch(
@@ -17,7 +18,7 @@ router.patch(
 router.patch(
   "/role",
   authController.protect,
-  authController.restrictTo("admin"),
+  //authController.restrictTo("admin"),
   userController.setRole
 );
 
